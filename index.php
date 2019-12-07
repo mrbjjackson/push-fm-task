@@ -1,5 +1,43 @@
+<?php 
+require 'vendor/autoload.php';
+
+$artistID = $_GET['id'];
+
+if ($artistID == '')
+$artistID = '2oyU4eToyQkxAFjkB3blsi';
+
+$session = new SpotifyWebAPI\Session(
+    '87ee9f3be4db430ba00cc6e25968a1cf',
+    '658572e540474af5a2c6703ce5a5cf35'
+);
+
+$session->requestCredentialsToken();
+$accessToken = $session->getAccessToken();
+
+$api = new SpotifyWebAPI\SpotifyWebAPI();
+$api->setAccessToken($accessToken);
+
+$error = '';
+try {
+
+  $artist = $api->getArtists([$artistID]);
+  $artist = $artist->artists[0];
+  
+  $relatedArtists = $api->getArtistRelatedArtists($artistID);
+  $relatedArtists = $relatedArtists->artists;
+  
+  $topTracks = $api->getArtistTopTracks($artistID, [
+    'country' => 'gb',
+  ]);
+  $topTracks = $topTracks->tracks;
+
+} catch (Exception $e) {
+  $error = 'Spotify API Error: ' . $e->getCode(); // Will be 404
+}
+
+?>
+
 <!DOCTYPE html>
-<!-- saved from url=(0031)http://localhost/privacy-policy -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +56,9 @@
 <link href="./resources/fonts.css" rel="stylesheet">
 <link href="./resources/app.css" rel="stylesheet">
 <link href="./resources/downloadedstyles.css" rel="stylesheet">
+<link href="./resources/style.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 
 </head>
 
@@ -29,47 +70,20 @@ include('header.php');
 include('aside.php');
 ?>
 
-<main class="mt-16 lg:mt-20 overflow-y-visible overflow-x-hidden lg:overflow-x-visible ml-menu-sm p-8" id="app"></main>
+<main class="mt-16 lg:mt-20 overflow-y-visible overflow-x-hidden lg:overflow-x-visible ml-menu-sm p-8" >
+  <div id="app"></div>
+</main>
 
 
-</body></html>
+</body>
+</html>
 
+<script>
+    var phpArtist = <?php echo json_encode($artist); ?>;
+    var phpRelatedArtists = <?php echo json_encode($relatedArtists); ?>;
+    var phpError = <?php echo json_encode($error); ?>;
+    var phpTopTracks = <?php echo json_encode($topTracks); ?>;
+</script>
 
+<script src="./bundle.js"></script>
 
-
-
-
-
-<!-- <main class="mt-16 lg:mt-20 overflow-y-visible overflow-x-hidden lg:overflow-x-visible ml-menu-sm p-8">
-  <div class="generic-page">
-    <h3 class="lg:mt-8 pb-8 lg:pb-12 w-full border-b border-indigo">Popo</h3>
-    <div class="container mx-auto"><div>
-      <p><strong>Privacy </strong></p>
-<p>This privacy policy applies to  <a href="https://www.push.fm/">https://www.push.fm</a>, and details what information PUSH collects, how it is used and how to opt out of non-compulsory aspects of information gathering. PUSH will not disclose your personal information to third parties without your consent. PUSH always uses secure methods when handling your sensitive information. If you need any further help, please see “How to contact us” below</p>
-<p><strong>Information</strong></p>
-<p>At PUSH, we want to give you the best possible experience to ensure that you enjoy our service today, tomorrow, and in the future. Your privacy and the security of your personal data is, and will always be, enormously important to us. So, we want to transparently explain how and why we gather, store, share and use your personal data - as well as outline the controls and choices you have around when and how you choose to share your personal data.</p>
-<blockquote>
-<ol>
-<li>When you sign up for the PUSH Service - when you sign up to the PUSH Service, we collect certain personal data so you can use the PUSH Service such as your email address, name and locale.</li>
-</ol>
-</blockquote>
-
-<p><strong>Keeping your personal data safe</strong></p>
-<p>We are committed to protecting our users’ personal data. We implement appropriate technical and organisational measures to help protect the security of your personal data; however, please note that no system is ever completely secure.</p>
-<p>Your password protects your user account, so we encourage you to use a unique and strong password, limit access to your computer and browser, and log out after having used the PUSH Service.</p>
-<p><strong>Changes to this Privacy Policy</strong></p>
-<p>We may occasionally make changes to this Policy.</p>
-<p>When we make material changes to this Policy, we’ll provide you with prominent notice as appropriate under the circumstances, e.g., by displaying a prominent notice within the PUSH Service or by sending you an email. We may notify you in advance.</p>
-<p>Please, therefore, make sure you read any such notice carefully.</p>
-<p><strong>How to contact us</strong></p>
-<p>Thank you for reading our Privacy Policy. If you have any questions about this Policy, please contact our Data Protection Officer by using the ‘Contact Support’ form or by writing to us at the following address:</p>
-<p><a href="http://push.fm/">PUSH.fm</a></p>
-<p>Kernow House</p>
-<p>Gas Hill</p>
-<p>Truro, Cornwall, TR1 2XP</p>
-<p>United Kingdom</p>
-<p>We hope you enjoy PUSH</p>
-<p>© RouteNote Ltd.</p>
-<p>This Privacy Policy is effective as of 1st March 2019.</p>
-</div>
-</main> -->
