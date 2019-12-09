@@ -1,7 +1,10 @@
 <template>
 
   <div class="relative w-full lg:container mx-auto">
-    <div class="error" v-if="error">{{ error }}</div>
+    <div class="error inline-block w-full border rounded p-4 lg:p-6 text-base leading-none select-none transition border-error bg-error-5 text-black" v-if="error">
+      Sorry we couldn't find that artist on Spotify.
+      <a href="/index.php?id=0gxyHStUsqpMadRV0Di1Qt">Maybe try this one.</a>
+    </div>
     <div class="spotify-browser" v-else>
       <div class="relative py-2 transition lg:overflow-x-hidden flex flex-no-wrap  ">
         <div class="flex-grow">
