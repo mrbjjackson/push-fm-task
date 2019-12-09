@@ -6,7 +6,9 @@ module.exports = {
   entry: './app.js',
   output: {
     path: path.resolve(__dirname, 'js'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    hotUpdateChunkFilename: 'hot/hot-update.js',
+    hotUpdateMainFilename: 'hot/hot-update.json'
   },
   module: {
     rules: [{
@@ -22,7 +24,15 @@ module.exports = {
     {
       test: /\.vue$/,
       loader: 'vue-loader'
-    }]
+    },
+    {
+      test: /\.css$/,
+      use: [
+        'vue-style-loader',
+        'css-loader'
+      ]
+    }
+  ]
   },
   plugins: [
     new VueLoaderPlugin(),

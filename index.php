@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 $artistID = $_GET['id'];
 
 if ($artistID == '')
-$artistID = '2oyU4eToyQkxAFjkB3blsi';
+$artistID = '0PFtn5NtBbbUNbU9EAmIWF';
 
 $session = new SpotifyWebAPI\Session(
     '87ee9f3be4db430ba00cc6e25968a1cf',
@@ -85,5 +85,5 @@ include('aside.php');
     var phpTopTracks = <?php echo json_encode($topTracks); ?>;
 </script>
 
-<script src="./bundle.js"></script>
+<script src="./js/bundle.js"></script>
 

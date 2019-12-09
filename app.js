@@ -6,6 +6,7 @@ new Vue({
     return createEl( Main, { props: {
       artist: phpArtist,
       relatedArtists: phpRelatedArtists,
+      topTracks: phpTopTracks,
       error: phpError
     } })
   }
