@@ -1,5 +1,19 @@
 <?php 
+
+/* 
+For this script to work you require a ".vars.php" file containing your Spotify CLIENT_SECRET and CLIENT_ID codes
+e.g. 
+<?php 
+$SPOTIFY_CLIENT_ID = 'xxxx';
+$SPOTIFY_CLIENT_SECRET = 'xxx';
+?>
+
+*/
+
+
 require 'vendor/autoload.php';
+include ('./.vars.php');
+
 
 $artistID = $_GET['id'];
 
@@ -7,8 +21,8 @@ if ($artistID == '')
 $artistID = '0PFtn5NtBbbUNbU9EAmIWF';
 
 $session = new SpotifyWebAPI\Session(
-    '87ee9f3be4db430ba00cc6e25968a1cf',
-    '658572e540474af5a2c6703ce5a5cf35'
+  $SPOTIFY_CLIENT_ID,
+  $SPOTIFY_CLIENT_SECRET
 );
 
 $session->requestCredentialsToken();
